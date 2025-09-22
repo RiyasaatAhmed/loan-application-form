@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* JPMorgan inspired design system */
+/** JPMorgan inspired design system colors */
 :root {
   --jp-blue: #0066cc;
   --jp-blue-dark: #004499;
@@ -39,7 +39,7 @@ body {
   color: var(--jp-gray-800);
 }
 
-/* JPMorgan inspired typography */
+/** Typography styles */
 h1,
 h2,
 h3,
@@ -52,9 +52,9 @@ h6 {
   margin: 0;
 }
 
-/* Custom scrollbar */
+/** Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 0px;
   height: 8px;
 }
 
@@ -71,26 +71,26 @@ h6 {
   background: var(--jp-gray-400);
 }
 
-/* Focus styles for accessibility */
+/** Focus styles for accessibility */
 *:focus {
   outline: 2px solid var(--jp-blue);
   outline-offset: 2px;
 }
 
-/* Button hover effects */
+/** Button hover effects */
 button:hover {
   transform: translateY(-1px);
   transition: transform 0.2s ease;
 }
 
-/* Card hover effects */
+/** Card hover effects */
 .card-hover:hover {
   box-shadow: 0 4px 12px rgba(0, 102, 204, 0.15);
   transform: translateY(-2px);
   transition: all 0.3s ease;
 }
 
-/* Responsive design */
+/** Responsive design */
 @media (max-width: 768px) {
   body {
     padding: 0;
@@ -101,7 +101,7 @@ button:hover {
   }
 }
 
-/* Animation utilities */
+/** Animation utilities */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -117,7 +117,7 @@ button:hover {
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Status indicators */
+/** Status indicators */
 .status-approved {
   color: var(--jp-success);
 }

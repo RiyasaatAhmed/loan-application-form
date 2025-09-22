@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "preview": "vite preview",
-    "server": "json-server --watch db.json --port 5001"
+    "server": "json-server --watch db.json --port 5001",
+    "type-check": "tsc --noEmit",
+    "validate": "npm run lint && npm run type-check"
   },
   "dependencies": {
     "@salt-ds/core": "^1.48.0",

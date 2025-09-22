@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { Table, TBody, TD, TH, THead, TR } from "@salt-ds/lab";
 import { CheckmarkIcon, CloseIcon, EditIcon, DeleteIcon } from "@salt-ds/icons";
 import { Text, Tag, Button, FlexLayout } from "@salt-ds/core";
@@ -6,7 +7,8 @@ import { LOAN_STATUS_CLASSES } from "../../../statics/loan-status";
 import { EMPLOYMENT_STATUS_CLASSES } from "../../../statics/employment-status";
 import { Link } from "react-router-dom";
 
-export function LoanTable() {
+/** Loan table component with data rendering and actions */
+export function LoanTable(): ReactElement {
   const { data } = useQueryResult();
 
   return (
@@ -32,6 +34,7 @@ export function LoanTable() {
                   to={`/loan/${loan.id}`}
                   className="flex items-center justify-center"
                 >
+                  {/* Confirmation status indicator */}
                   {loan.isConfirmed ? (
                     <CheckmarkIcon className="text-green-500" />
                   ) : (

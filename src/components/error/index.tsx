@@ -1,19 +1,38 @@
+import type { ReactElement } from "react";
 import { FlexLayout, Text, Button, StackLayout } from "@salt-ds/core";
 import { RefreshIcon, ErrorIcon } from "@salt-ds/icons";
 
+/**
+ * Props for the Error component.
+ */
 interface ErrorProps {
+  /** Error message to display */
   message?: string;
+  /** Function to call when retry button is clicked */
   onRetry?: () => void;
+  /** Whether to show the retry button */
   showRetryButton?: boolean;
+  /** Optional CSS class name for custom styling */
   className?: string;
 }
 
+/**
+ * Error display component with retry functionality.
+ * Shows an error message with optional retry button.
+ *
+ * @param props - Component props
+ * @param props.message - Error message to display
+ * @param props.onRetry - Function to call when retry button is clicked
+ * @param props.showRetryButton - Whether to show the retry button
+ * @param props.className - Optional CSS class for custom styling
+ * @returns React element containing the error display
+ */
 export function Error({
   message = "Something went wrong. Please try again.",
   onRetry,
   showRetryButton = true,
   className,
-}: ErrorProps) {
+}: ErrorProps): ReactElement {
   return (
     <FlexLayout
       direction="column"

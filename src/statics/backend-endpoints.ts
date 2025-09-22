@@ -1,3 +1,8 @@
+/**
+ * API configuration and error messages for loan application system
+ */
+
+/** API endpoints for loan applications */
 export const API_ENDPOINTS = {
   LOANS: {
     GET_LOANS: "/loan-applications",
@@ -8,6 +13,7 @@ export const API_ENDPOINTS = {
   },
 } as const;
 
+/** HTTP status codes */
 export const HTTP_STATUS = {
   OK: 200,
   CREATED: 201,
@@ -16,14 +22,25 @@ export const HTTP_STATUS = {
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
   NOT_FOUND: 404,
+  VALIDATION_ERROR: 422,
+  RATE_LIMITED: 429,
   INTERNAL_SERVER_ERROR: 500,
 } as const;
 
+/** User-friendly error messages */
 export const API_ERROR_MESSAGES = {
-  NETWORK_ERROR: "Network error occurred",
-  UNAUTHORIZED: "You are not authorized to access this resource",
-  FORBIDDEN: "Access forbidden",
-  NOT_FOUND: "Resource not found",
-  SERVER_ERROR: "Server error occurred",
-  UNKNOWN_ERROR: "An unknown error occurred",
+  NETWORK_ERROR: "Please check your internet connection and try again.",
+  UNAUTHORIZED:
+    "You don't have permission to access this resource. Please log in.",
+  FORBIDDEN: "You don't have permission to access this resource.",
+  NOT_FOUND: "The information you're looking for could not be found.",
+  SERVER_ERROR:
+    "There's a problem with our servers. Please try again in a few moments.",
+  UNKNOWN_ERROR: "An unexpected error occurred. Please try again.",
+  VALIDATION_ERROR:
+    "There are some issues with the information you provided. Please check and try again.",
+  RATE_LIMITED:
+    "You're making requests too quickly. Please wait a moment before trying again.",
+  INTERNAL_SERVER_ERROR:
+    "We're experiencing technical difficulties. Our team has been notified.",
 } as const;

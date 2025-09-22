@@ -1,17 +1,6 @@
-import { Card, StackLayout, Text } from "@salt-ds/core";
-import { useQueryResult } from "../providers/query-provider";
+import type { ReactElement } from "react";
+import { ComingSoon } from "../../../components/coming-soon";
 
-export function Page() {
-  const { data } = useQueryResult();
-  return (
-    <Card>
-      <StackLayout gap={3}>
-        <Text styleAs="h1">Loan Details</Text>
-        <Text>Loan ID: {data?.id}</Text>
-        <Text>
-          This page will show detailed information about the loan application.
-        </Text>
-      </StackLayout>
-    </Card>
-  );
+export function Page(): ReactElement {
+  return <ComingSoon />;
 }

@@ -1,17 +1,25 @@
 import axios from "axios";
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { secrets } from "../statics/secrets";
+import { HTTP_STATUS, API_ERROR_MESSAGES } from "../statics/backend-endpoints";
+import { DEFAULT_EMPTY_STRING } from "../statics/constants";
 
-// Create axios instance with cookies-based authentication
+/**
+ * Configured Axios instance with default settings.
+ * Provides HTTP client with timeout, headers, and base URL configuration.
+ *
+ * @constant {AxiosInstance} apiClient - The configured Axios instance
+ */
 const apiClient: AxiosInstance = axios.create({
-  timeout: 60 * 5 * 1000, // 5 minutes
-  headers: {
-    "Content-Type": "application/json",
-  },
+  timeout: secrets.API_TIMEOUT,
+  headers: { "Content-Type": "application/json" },
   baseURL: secrets.BACKEND_URL,
 });
 
-// Request interceptor for logging and debugging
+/**
+ * Request interceptor for logging and debugging.
+ * Currently passes through requests without modification.
+ */
 apiClient.interceptors.request.use(
   (config) => {
     return config;
@@ -21,84 +29,81 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Response interceptor for handling common errors
+/**
+ * Response interceptor for handling common errors and logging.
+ * Provides centralized error handling and response logging.
+ */
 apiClient.interceptors.response.use(
-  (response: AxiosResponse) => {
-    // Log successful responses for debugging (remove in production)
-    console.log(`✅ API Response: ${response.status} ${response.config.url}`);
-    return response;
-  },
+  (response: AxiosResponse) => response,
   (error) => {
     // Handle common error cases
     if (error.response) {
       const { status, data } = error.response;
 
       switch (status) {
-        case 401:
+        case HTTP_STATUS.UNAUTHORIZED:
           // Unauthorized - redirect to login
-          console.warn("🔐 Unauthorized, redirecting to login...");
+          console.warn(API_ERROR_MESSAGES.UNAUTHORIZED);
           break;
-        case 403:
+        case HTTP_STATUS.FORBIDDEN:
           // Forbidden - user doesn't have permission
-          console.error(
-            "🚫 Access forbidden:",
-            data?.message || "Insufficient permissions"
-          );
+          console.error(data?.message || API_ERROR_MESSAGES.FORBIDDEN);
           break;
-        case 404:
+        case HTTP_STATUS.NOT_FOUND:
           // Not found
-          console.error(
-            "🔍 Resource not found:",
-            data?.message || "Requested resource not found"
-          );
+          console.error(data?.message || API_ERROR_MESSAGES.NOT_FOUND);
           break;
-        case 422:
+        case HTTP_STATUS.VALIDATION_ERROR:
           // Validation error
-          console.error(
-            "📝 Validation error:",
-            data?.message || "Invalid data provided"
-          );
+          console.error(data?.message || API_ERROR_MESSAGES.VALIDATION_ERROR);
           break;
-        case 429:
+        case HTTP_STATUS.RATE_LIMITED:
           // Rate limited
-          console.error(
-            "⏰ Rate limited:",
-            data?.message || "Too many requests"
-          );
+          console.error(data?.message || API_ERROR_MESSAGES.RATE_LIMITED);
           break;
-        case 500:
+        case HTTP_STATUS.INTERNAL_SERVER_ERROR:
           // Server error
           console.error(
-            "💥 Server error:",
-            data?.message || "Internal server error"
+            data?.message || API_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
           );
           break;
         default:
-          console.error(
-            `❌ API Error (${status}):`,
-            data?.message || "Unknown error occurred"
-          );
+          console.error(data?.message || API_ERROR_MESSAGES.UNKNOWN_ERROR);
       }
     } else if (error.request) {
       // Network error
-      console.error("🌐 Network error:", error.message);
+      console.error(error.message || API_ERROR_MESSAGES.NETWORK_ERROR);
     } else {
       // Other error
-      console.error("❌ Error:", error.message);
+      console.error(error.message || API_ERROR_MESSAGES.UNKNOWN_ERROR);
     }
     return Promise.reject(error);
   }
 );
 
-// API service class with cookies-based authentication
+/**
+ * API service class providing HTTP methods and utilities.
+ * Wraps Axios client with additional functionality for file uploads, downloads, and health checks.
+ */
 class ApiService {
   private client: AxiosInstance;
 
+  /**
+   * Creates an instance of ApiService.
+   *
+   * @param client - The Axios instance to use for HTTP requests
+   */
   constructor(client: AxiosInstance) {
     this.client = client;
   }
 
-  // Generic GET request
+  /**
+   * Performs a GET request.
+   *
+   * @param url - The URL to request
+   * @param config - Optional Axios request configuration
+   * @returns Promise resolving to the response data
+   */
   async get<T = Response>(
     url: string,
     config?: AxiosRequestConfig
@@ -107,7 +112,14 @@ class ApiService {
     return response.data;
   }
 
-  // Generic POST request
+  /**
+   * Performs a POST request.
+   *
+   * @param url - The URL to request
+   * @param data - Optional data to send in the request body
+   * @param config - Optional Axios request configuration
+   * @returns Promise resolving to the response data
+   */
   async post<T = Response>(
     url: string,
     data?: unknown,
@@ -117,7 +129,14 @@ class ApiService {
     return response.data;
   }
 
-  // Generic PUT request
+  /**
+   * Performs a PUT request.
+   *
+   * @param url - The URL to request
+   * @param data - Optional data to send in the request body
+   * @param config - Optional Axios request configuration
+   * @returns Promise resolving to the response data
+   */
   async put<T = Response>(
     url: string,
     data?: unknown,
@@ -127,7 +146,14 @@ class ApiService {
     return response.data;
   }
 
-  // Generic PATCH request
+  /**
+   * Performs a PATCH request.
+   *
+   * @param url - The URL to request
+   * @param data - Optional data to send in the request body
+   * @param config - Optional Axios request configuration
+   * @returns Promise resolving to the response data
+   */
   async patch<T = Response>(
     url: string,
     data?: unknown,
@@ -137,7 +163,13 @@ class ApiService {
     return response.data;
   }
 
-  // Generic DELETE request
+  /**
+   * Performs a DELETE request.
+   *
+   * @param url - The URL to request
+   * @param config - Optional Axios request configuration
+   * @returns Promise resolving to the response data
+   */
   async delete<T = Response>(
     url: string,
     config?: AxiosRequestConfig
@@ -146,7 +178,15 @@ class ApiService {
     return response.data;
   }
 
-  // Upload file with progress tracking
+  /**
+   * Uploads a file with progress tracking.
+   *
+   * @param url - The URL to upload to
+   * @param file - The file to upload
+   * @param onProgress - Optional callback for progress updates
+   * @param config - Optional Axios request configuration
+   * @returns Promise resolving to the response data
+   */
   async upload<T = Response>(
     url: string,
     file: File,
@@ -174,7 +214,13 @@ class ApiService {
     return response.data;
   }
 
-  // Download file
+  /**
+   * Downloads a file from the server.
+   *
+   * @param url - The URL to download from
+   * @param filename - Optional filename for the download
+   * @returns Promise that resolves when download is complete
+   */
   async download(url: string, filename?: string): Promise<void> {
     const response = await this.client.get(url, {
       responseType: "blob",
@@ -191,7 +237,11 @@ class ApiService {
     window.URL.revokeObjectURL(downloadUrl);
   }
 
-  // Health check
+  /**
+   * Performs a health check on the API.
+   *
+   * @returns Promise resolving to true if API is healthy, false otherwise
+   */
   async healthCheck(): Promise<boolean> {
     try {
       await this.client.get("/health");
@@ -201,18 +251,31 @@ class ApiService {
     }
   }
 
-  // Get base URL
+  /**
+   * Gets the current base URL.
+   *
+   * @returns The current base URL or empty string if not set
+   */
   getBaseURL(): string {
-    return this.client.defaults.baseURL || "";
+    return this.client.defaults.baseURL || DEFAULT_EMPTY_STRING;
   }
 
-  // Set base URL
+  /**
+   * Sets the base URL for all requests.
+   *
+   * @param url - The new base URL
+   */
   setBaseURL(url: string): void {
     this.client.defaults.baseURL = url;
   }
 }
 
-// Create and export singleton instance
+/**
+ * Singleton instance of the API service.
+ * Provides a configured instance ready for use throughout the application.
+ *
+ * @constant {ApiService} apiService - The configured API service instance
+ */
 const apiService = new ApiService(apiClient);
 
 export default apiService;

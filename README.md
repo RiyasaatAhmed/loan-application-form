@@ -1,69 +1,69 @@
-# React + TypeScript + Vite
+# JPMorgan Inspired Loan Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern loan application form built with React, TypeScript, and JPMorgan's Salt Design System. Features a 3-step form with real-time validation, responsive design, and professional UI.
 
-Currently, two official plugins are available:
+## 🚀 Quick Start
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Prerequisites
 
-## Expanding the ESLint configuration
+- Node.js 18+
+- npm or yarn
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Installation & Setup
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. **Clone and install**
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+   ```bash
+   git clone <repository-url>
+   cd loan-application-form
+   npm install
+   ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. **Start the application**
+
+   ```bash
+   # Terminal 1: Start the JSON Server
+   npm run server
+
+   # Terminal 2: Start the Frontend
+   npm run dev
+   ```
+
+3. **Open your browser**
+   Navigate to `http://localhost:5173`
+
+## ✨ Features
+
+- **3-Step Form**: Personal info → Financial details → Review
+- **Real-time Validation**: Instant feedback with meaningful errors
+- **Responsive Design**: Works on all devices
+- **Professional UI**: JPMorgan Salt Design System
+- **Type Safety**: Full TypeScript implementation
+- **Code Splitting**: Optimized performance with lazy loading
+
+## 🛠️ Tech Stack
+
+- React 18 + TypeScript
+- Vite (Build Tool)
+- JPMorgan Salt Design System
+- TanStack Query (State Management)
+- React Router v6
+- Tailwind CSS
+- JSON Server (Mock API)
+
+## 🎯 How It Works
+
+1. **Personal Information**: Name, email, phone validation
+2. **Financial Details**: Income, loan amount, employment status
+3. **Review & Submit**: Data summary with confirmation
+
+## 🧪 Available Scripts
+
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run preview  # Preview production build
+npm run server      # Start mock API server
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+**Note**: This is a demonstration project inspired by JPMorgan's design principles.

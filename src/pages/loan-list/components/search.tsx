@@ -1,19 +1,25 @@
+import type { ReactElement } from "react";
 import { Button, FormField, Input } from "@salt-ds/core";
 import { SearchIcon, CloseIcon } from "@salt-ds/icons";
 import { useEffect, useState } from "react";
 import { useQueryParams } from "../../../hooks/use-query-params";
 import { useDebounce } from "../../../hooks/use-debounce";
+import { DEFAULT_EMPTY_STRING } from "../../../statics/constants";
 
-export function Search() {
+/** Search component with debounced input and clear functionality */
+export function Search(): ReactElement {
   const { getParam, updateQuery } = useQueryParams();
   const currentSearch = getParam("name");
-  const [searchInput, setSearchInput] = useState(currentSearch || "");
+  const [searchInput, setSearchInput] = useState(
+    currentSearch || DEFAULT_EMPTY_STRING
+  );
   const debouncedSearch = useDebounce(searchInput, 500);
 
   const handleClear = () => {
-    setSearchInput("");
+    setSearchInput(DEFAULT_EMPTY_STRING);
   };
 
+  // Update URL query when debounced search changes
   useEffect(() => {
     if (debouncedSearch !== currentSearch) {
       updateQuery({ name: debouncedSearch });

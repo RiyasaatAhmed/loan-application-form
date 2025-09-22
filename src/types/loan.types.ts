@@ -1,3 +1,4 @@
+/** Employment status options */
 export type EmploymentStatus =
   | "Full-time"
   | "Part-time"
@@ -5,6 +6,7 @@ export type EmploymentStatus =
   | "Unemployed"
   | "Student";
 
+/** Base loan application interface */
 export interface LoanBase {
   id: string;
   name: string;
@@ -18,8 +20,10 @@ export interface LoanBase {
   status: string;
 }
 
+/** Partial loan update type */
 export type UpdateLoan = Partial<LoanBase>;
 
+/** Loan form step enumeration */
 export enum LoanFormStep {
   PersonalInfo = 1,
   FinancialInfo = 2,

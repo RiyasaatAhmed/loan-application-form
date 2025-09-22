@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { DEFAULT_EMPTY_STRING } from "../statics/constants";
 
 // Types
 interface UseQueryParamsReturn {
@@ -9,12 +10,10 @@ interface UseQueryParamsReturn {
   clearQuery: () => void;
 }
 
-// Constants
-const DEFAULT_EMPTY_STRING = "";
-
 /**
- * Custom hook for managing URL query parameters with React Router
- * Provides utilities to get, update, and clear query parameters
+ * Manages URL query parameters with React Router.
+ *
+ * @returns Object with query parameter utilities
  */
 export const useQueryParams = (): UseQueryParamsReturn => {
   const location = useLocation();
@@ -27,7 +26,8 @@ export const useQueryParams = (): UseQueryParamsReturn => {
   );
 
   /**
-   * Get a single query parameter value
+   * Get a single query parameter value.
+   *
    * @param key - The parameter key to retrieve
    * @returns The decoded parameter value or empty string if not found
    */
@@ -40,7 +40,8 @@ export const useQueryParams = (): UseQueryParamsReturn => {
   );
 
   /**
-   * Get all query parameters as an object
+   * Get all query parameters as an object.
+   *
    * @returns Object containing all query parameters
    */
   const getAllParams = useCallback((): Record<string, string> => {
@@ -54,7 +55,8 @@ export const useQueryParams = (): UseQueryParamsReturn => {
   }, [searchParams]);
 
   /**
-   * Update multiple query parameters
+   * Update multiple query parameters.
+   *
    * @param updates - Object containing parameter updates (null values will be removed)
    */
   const updateQuery = useCallback(
@@ -92,13 +94,13 @@ export const useQueryParams = (): UseQueryParamsReturn => {
   );
 
   /**
-   * Clear all query parameters
+   * Clear all query parameters.
    */
   const clearQuery = useCallback((): void => {
     navigate(
       {
         pathname: location.pathname,
-        search: "",
+        search: DEFAULT_EMPTY_STRING,
       },
       { replace: true }
     );

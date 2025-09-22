@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { LoanApiService } from "./loan-service";
 
 /**
- * Get loans (returns LoanBase[])
+ * Get loans (returns Array<LoanBase>)
  */
 export const useLoans = (name: string, status: string) => {
   return useQuery({

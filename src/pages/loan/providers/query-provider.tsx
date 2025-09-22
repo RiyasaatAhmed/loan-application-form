@@ -1,9 +1,10 @@
-import type { PropsWithChildren } from "react";
+import type { PropsWithChildren, ReactElement } from "react";
 import { createContext, useContext } from "react";
 import { useLoan } from "../../../api/loan";
 import type { DefaultError, UseQueryResult } from "@tanstack/react-query";
 import type { LoanBase } from "../../../types/loan.types";
 import { useParams } from "react-router-dom";
+import { DEFAULT_EMPTY_STRING } from "../../../statics/constants";
 
 // Types
 type QueryResult = UseQueryResult<LoanBase, DefaultError>;
@@ -23,8 +24,10 @@ export const useQueryResult = (): QueryResult => {
 };
 
 // Provider component
-export const QueryProvider = ({ children }: PropsWithChildren) => {
-  const { id = "" } = useParams();
+export const QueryProvider = ({
+  children,
+}: PropsWithChildren): ReactElement => {
+  const { id = DEFAULT_EMPTY_STRING } = useParams();
 
   const queryResult = useLoan(id);
 

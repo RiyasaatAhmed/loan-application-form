@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from "react";
+import type { PropsWithChildren, ReactElement } from "react";
 import { createContext, useContext, useMemo } from "react";
 import { useLoans } from "../../../api/loan";
 import type { DefaultError, UseQueryResult } from "@tanstack/react-query";
@@ -22,7 +22,9 @@ export const useQueryResult = (): QueryResult => {
 };
 
 // Provider component
-export const QueryProvider = ({ children }: PropsWithChildren) => {
+export const QueryProvider = ({
+  children,
+}: PropsWithChildren): ReactElement => {
   const { getParam } = useQueryParams();
 
   // Memoize the parameters to ensure stable references
