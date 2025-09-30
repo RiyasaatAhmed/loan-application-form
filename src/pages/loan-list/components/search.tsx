@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useQueryParams } from "../../../hooks/use-query-params";
 import { useDebounce } from "../../../hooks/use-debounce";
 import { DEFAULT_EMPTY_STRING } from "../../../statics/constants";
+import { sanitizeSearchInput } from "../../../utils/security-sanitization";
 
 /** Search component with debounced input and clear functionality */
 export function Search(): ReactElement {
@@ -34,9 +35,10 @@ export function Search(): ReactElement {
         value={searchInput}
         variant="primary"
         inputProps={{ name: "name" }}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setSearchInput(e.target.value)
-        }
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          const sanitized = sanitizeSearchInput(e.target.value);
+          setSearchInput(sanitized);
+        }}
         endAdornment={
           searchInput && (
             <Button appearance="transparent" onClick={handleClear}>

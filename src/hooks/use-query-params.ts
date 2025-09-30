@@ -1,6 +1,10 @@
 import { useCallback, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { DEFAULT_EMPTY_STRING } from "../statics/constants";
+import {
+  sanitizeQueryParam,
+  sanitizePathname,
+} from "../utils/security-sanitization";
 
 // Types
 interface UseQueryParamsReturn {
@@ -26,36 +30,53 @@ export const useQueryParams = (): UseQueryParamsReturn => {
   );
 
   /**
-   * Get a single query parameter value.
+   * Get a single query parameter value with sanitization.
    *
    * @param key - The parameter key to retrieve
-   * @returns The decoded parameter value or empty string if not found
+   * @returns The sanitized and decoded parameter value or empty string if not found
    */
   const getParam = useCallback(
     (key: string): string => {
       const value = searchParams.get(key);
-      return value ? decodeURIComponent(value) : DEFAULT_EMPTY_STRING;
+      if (!value) return DEFAULT_EMPTY_STRING;
+
+      try {
+        const decoded = decodeURIComponent(value);
+        const sanitized = sanitizeQueryParam(key, decoded);
+        return sanitized || DEFAULT_EMPTY_STRING;
+      } catch (error) {
+        console.warn(`Failed to decode query parameter ${key}:`, error);
+        return DEFAULT_EMPTY_STRING;
+      }
     },
     [searchParams]
   );
 
   /**
-   * Get all query parameters as an object.
+   * Get all query parameters as an object with sanitization.
    *
-   * @returns Object containing all query parameters
+   * @returns Object containing all sanitized query parameters
    */
   const getAllParams = useCallback((): Record<string, string> => {
     const params: Record<string, string> = {};
 
     for (const [key, value] of searchParams.entries()) {
-      params[key] = decodeURIComponent(value);
+      try {
+        const decoded = decodeURIComponent(value);
+        const sanitized = sanitizeQueryParam(key, decoded);
+        if (sanitized) {
+          params[key] = sanitized;
+        }
+      } catch (error) {
+        console.warn(`Failed to decode query parameter ${key}:`, error);
+      }
     }
 
     return params;
   }, [searchParams]);
 
   /**
-   * Update multiple query parameters.
+   * Update multiple query parameters with sanitization.
    *
    * @param updates - Object containing parameter updates (null values will be removed)
    */
@@ -63,7 +84,7 @@ export const useQueryParams = (): UseQueryParamsReturn => {
     (updates: Record<string, string | null>): void => {
       const newSearchParams = new URLSearchParams(location.search);
 
-      // Apply updates
+      // Apply updates with sanitization
       Object.entries(updates).forEach(([key, value]) => {
         if (
           value === null ||
@@ -72,7 +93,12 @@ export const useQueryParams = (): UseQueryParamsReturn => {
         ) {
           newSearchParams.delete(key);
         } else {
-          newSearchParams.set(key, value);
+          const sanitized = sanitizeQueryParam(key, value);
+          if (sanitized) {
+            newSearchParams.set(key, sanitized);
+          } else {
+            newSearchParams.delete(key);
+          }
         }
       });
 
@@ -84,7 +110,7 @@ export const useQueryParams = (): UseQueryParamsReturn => {
 
       navigate(
         {
-          pathname: location.pathname,
+          pathname: sanitizePathname(location.pathname),
           search: new URLSearchParams(searchObject).toString(),
         },
         { replace: true }
@@ -99,7 +125,7 @@ export const useQueryParams = (): UseQueryParamsReturn => {
   const clearQuery = useCallback((): void => {
     navigate(
       {
-        pathname: location.pathname,
+        pathname: sanitizePathname(location.pathname),
         search: DEFAULT_EMPTY_STRING,
       },
       { replace: true }
