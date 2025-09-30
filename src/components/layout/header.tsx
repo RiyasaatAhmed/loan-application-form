@@ -16,7 +16,9 @@ export function Header(): ReactElement {
         {/* Brand section with title and description */}
         <FlexItem>
           <Link to="/">
-            <Text styleAs="h1">Loan Applications</Text>
+            <Text styleAs="h1">
+              <h1>Loan Applications</h1>
+            </Text>
             <Text color="secondary" styleAs="code">
               Manage and track all loan applications
             </Text>

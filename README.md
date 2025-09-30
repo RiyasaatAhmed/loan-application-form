@@ -62,6 +62,8 @@ A modern loan application system built with React, TypeScript, and JPMorgan's Sa
 - **Professional UI**: JPMorgan Salt Design System integration
 - **Type Safety**: Full TypeScript implementation
 - **Code Splitting**: Optimized performance with lazy loading
+- **Security Features**: Comprehensive input sanitization and XSS protection
+- **End-to-End Testing**: Playwright tests for cross-browser compatibility
 
 ## 🚧 Future Plans
 
@@ -81,7 +83,78 @@ A modern loan application system built with React, TypeScript, and JPMorgan's Sa
 - React Router v7.9.1
 - Tailwind CSS 4.1.13
 - JSON Server 1.0.0-beta.3 (Mock API)
+- Playwright 1.55.1 (End-to-End Testing)
 - Node.js v22.16.0 + npm 10.9.2
+
+## 🧪 Testing
+
+This project includes comprehensive end-to-end testing using Playwright to ensure the application works correctly across different browsers and scenarios.
+
+### Test Coverage
+
+- **Header Component**: Tests header rendering, navigation, and styling
+- **Cross-Browser Testing**: Chrome, Firefox, and Safari compatibility
+- **User Interactions**: Button clicks, navigation, and form interactions
+- **Visual Regression**: Ensures UI consistency across browsers
+
+## Future Test
+
+### Planned Test Coverage
+
+- **Search and Filter Functionality**: Advanced search and filtering behavior
+
+### Running Tests
+
+```bash
+# Run all tests (headless)
+npm run test
+
+# Run tests with browser visible
+npm run test:headed
+
+# Run tests in debug mode
+npm run test:debug
+
+# Run tests with interactive UI
+npm run test:ui
+
+# View detailed test report
+npm run test:report
+```
+
+### Test Structure
+
+```
+playwright/
+├── header.spec.ts          # Header component tests
+└── example.spec.ts         # Example tests (can be removed)
+
+playwright.config.ts        # Playwright configuration
+```
+
+## 🔒 Security Features
+
+This application implements comprehensive security measures to protect against common web vulnerabilities:
+
+### Input Sanitization
+
+- **Multi-layer sanitization** for all user inputs
+- **XSS prevention** through dangerous pattern blocking
+- **Path traversal protection** for URL manipulation
+- **Length limits** to prevent DoS attacks
+
+### Security Measures
+
+- **Query parameter validation** with allowlist-based filtering
+- **Pathname sanitization** to prevent directory traversal
+- **Search input cleaning** for safe search functionality
+- **Comprehensive logging** for security monitoring
+
+### Security Configuration
+
+- **Centralized security constants** in `src/statics/security-config.ts`
+- **Sanitization utilities** in `src/utils/security-sanitization.ts`
+- **React hook integration** for consistent security application
 
 ## 🎯 How It Works
 
@@ -101,10 +174,18 @@ A modern loan application system built with React, TypeScript, and JPMorgan's Sa
 ## 🧪 Available Scripts
 
 ```bash
-npm run dev      # Start development server
-npm run build    # Build for production
-npm run preview  # Preview production build
-npm run server   # Start mock API server
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run server       # Start mock API server
+npm run lint         # Run ESLint
+npm run type-check   # Run TypeScript type checking
+npm run validate     # Run lint and type-check
+npm run test         # Run Playwright tests
+npm run test:headed  # Run tests with browser visible
+npm run test:debug   # Run tests in debug mode
+npm run test:ui      # Run tests with interactive UI
+npm run test:report  # View test results report
 ```
 
 ## ⚠️ Known Limitations
