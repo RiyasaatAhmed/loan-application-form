@@ -18,7 +18,7 @@
     "test:report": "playwright show-report"
   },
   "dependencies": {
-    "@salt-ds/core": "^1.48.0",
+    "@salt-ds/core": "^1.54.0",
     "@salt-ds/icons": "^1.14.0",
     "@salt-ds/lab": "^1.0.0-alpha.76",
     "@salt-ds/theme": "^1.32.0",
